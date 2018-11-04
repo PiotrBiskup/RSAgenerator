@@ -5,91 +5,93 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeneratorRSA"
         mc:Ignorable="d"
-        Title="RSA generator" Height="450" Width="800">
+        Title="RSA generator" Height="600" Width="800">
 
-    <Border Padding="10">
+    <ScrollViewer>
+        <Border Padding="10">
 
-        <StackPanel>
+            <StackPanel>
+                <TextBlock TextWrapping="Wrap" x:Name="opisTextBlock" Text=""  Margin="0 0 0 20"></TextBlock>
 
-            <TextBlock Text="Enter the RSA generator key:" FontWeight="Bold" Margin="0 0 0 2"></TextBlock>
-            <Grid>
+                <TextBlock Text="Enter the RSA generator key:" FontWeight="Bold" Margin="0 0 0 2"></TextBlock>
+                <Grid>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="20"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <TextBlock Text="[" FontSize="20" HorizontalAlignment="Center"/>
-                </StackPanel>
-                
-                <StackPanel Grid.Column="1" Margin="0 3 0 0">
-                    <TextBox TextAlignment="Center" TextChanged="keyETextBox_TextChanged" x:Name="keyETextBox" IsEnabled="True" Padding="3" PreviewTextInput="NumberValidationTextBox"></TextBox>
-                </StackPanel>
-                
-                <StackPanel Grid.Column="2">
-                    <TextBlock Text="," FontSize="20" HorizontalAlignment="Center"/>
-                </StackPanel>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="[" FontSize="20" HorizontalAlignment="Center"/>
+                    </StackPanel>
 
-                <StackPanel Grid.Column="3" Margin="0 3 0 0">
-                    <TextBox TextAlignment="Center" TextChanged="keyNTextBox_TextChanged" x:Name="keyNTextBox" IsEnabled="True" Padding="3" PreviewTextInput="NumberValidationTextBox"></TextBox>
+                    <StackPanel Grid.Column="1" Margin="0 3 0 0">
+                        <TextBox TextAlignment="Center" TextChanged="keyETextBox_TextChanged" x:Name="keyETextBox" IsEnabled="True" Padding="3" PreviewTextInput="NumberValidationTextBox"></TextBox>
+                    </StackPanel>
 
-                </StackPanel>
-                
-                <StackPanel Grid.Column="4">
-                    <TextBlock Text="]" FontSize="20" HorizontalAlignment="Center"/>
-                </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="," FontSize="20" HorizontalAlignment="Center"/>
+                    </StackPanel>
 
+                    <StackPanel Grid.Column="3" Margin="0 3 0 0">
+                        <TextBox TextAlignment="Center" TextChanged="keyNTextBox_TextChanged" x:Name="keyNTextBox" IsEnabled="True" Padding="3" PreviewTextInput="NumberValidationTextBox"></TextBox>
 
-            </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="]" FontSize="20" HorizontalAlignment="Center"/>
+                    </StackPanel>
 
 
-            <TextBlock Text="How many bits you want to be genrated?:" FontWeight="Bold" Margin="0 20 0 0"></TextBlock>
-            <TextBox TextChanged="lenghtTextBox_TextChanged" x:Name="lenghtTextBox" Width="100" HorizontalAlignment="Left" Padding="3" Margin="0 5 0 0" PreviewTextInput="NumberValidationTextBox"/>
+                </Grid>
 
-            <Grid Margin="0 20 0 20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <Button Click="generateButton_Click" x:Name="generateButton" Padding="5" Width="100" Content="Generate" HorizontalAlignment="Left"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <ProgressBar x:Name="generateProgressBar" Height="28" Value="{Binding WorkerState}"></ProgressBar>
-                </StackPanel>
+                <TextBlock Text="How many bits you want to be genrated?:" FontWeight="Bold" Margin="0 20 0 0"></TextBlock>
+                <TextBox TextChanged="lenghtTextBox_TextChanged" x:Name="lenghtTextBox" Width="100" HorizontalAlignment="Left" Padding="3" Margin="0 5 0 0" PreviewTextInput="NumberValidationTextBox"/>
 
-            </Grid>
+                <Grid Margin="0 20 0 20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="stringRSA" Padding="3" IsReadOnly="True" Height="160" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" ></TextBox>
+                    <StackPanel Grid.Column="0">
+                        <Button Click="generateButton_Click" x:Name="generateButton" Padding="5" Width="100" Content="Generate" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <ProgressBar x:Name="generateProgressBar" Height="28" Value="{Binding WorkerState}"></ProgressBar>
+                    </StackPanel>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
+                </Grid>
 
-                <StackPanel Grid.Column="0">
-                    <Button Click="saveToFileButton_Click" x:Name="saveToFileButton" Content="Save to file" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <Button Background="Red" Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
-                </StackPanel>
+                <TextBox x:Name="stringRSA" Padding="3" IsReadOnly="True" Height="160" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" ></TextBox>
 
-            </Grid>
-            
-            
-            
-        </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
 
-        
+                    <StackPanel Grid.Column="0">
+                        <Button Click="saveToFileButton_Click" x:Name="saveToFileButton" Content="Save to file" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <Button Background="Red" Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
+                    </StackPanel>
 
-    </Border>
+                </Grid>
 
+
+
+            </StackPanel>
+
+
+
+        </Border>
+    </ScrollViewer>
 
 
 </Window>
