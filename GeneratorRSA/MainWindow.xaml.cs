@@ -96,6 +96,7 @@ namespace GeneratorRSA
 
         private void generateButton_Click(object sender, RoutedEventArgs e)
         {
+            Thread.Sleep(100);
             generateButton.IsEnabled = false;
             generateProgressBar.Minimum = 0;
             generateProgressBar.Maximum = lenght - 1;
@@ -110,7 +111,7 @@ namespace GeneratorRSA
                     this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
                     {
                         stringRSA.Text = result;
-
+                        generateButton.IsEnabled = true;
                     }));
                 } else
                 {
@@ -119,8 +120,8 @@ namespace GeneratorRSA
                 
             };
             _bgworker.RunWorkerAsync();
-            Thread.Sleep(300);
-            generateButton.IsEnabled = true;
+            
+           
         }
 
         private void saveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -205,6 +206,7 @@ namespace GeneratorRSA
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
             goOn = false;
+            generateButton.IsEnabled = true;
             keyETextBox.Clear();
             keyNTextBox.Clear();
             lenghtTextBox.Clear();
