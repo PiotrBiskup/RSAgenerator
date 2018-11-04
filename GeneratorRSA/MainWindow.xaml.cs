@@ -22,7 +22,7 @@ namespace GeneratorRSA
         int keyE;
         int keyN;
         int lenght;
-        BackgroundWorker _bgworker = new BackgroundWorker();
+        BackgroundWorker _bgworker;
         int _workerState;
         bool goOn = true;
 
@@ -103,6 +103,7 @@ namespace GeneratorRSA
 
             DataContext = this;
             goOn = true;
+            _bgworker = new BackgroundWorker();
             _bgworker.DoWork += (s, f) =>
             {
                 String result = Generate(keyE, keyN, lenght);
@@ -207,9 +208,6 @@ namespace GeneratorRSA
         {
             goOn = false;
             generateButton.IsEnabled = true;
-            keyETextBox.Clear();
-            keyNTextBox.Clear();
-            lenghtTextBox.Clear();
             stringRSA.Clear();
             shouldGenButtonBeEnabled();
             WorkerState = 0;
