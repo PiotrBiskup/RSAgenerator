@@ -6,35 +6,54 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Microsoft.Win32;
 using System.IO;
+using System.ComponentModel;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace GeneratorRSA
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window , INotifyPropertyChanged
     {
 
         int[] xarray;
         int keyE;
         int keyN;
         int lenght;
+        BackgroundWorker _bgworker = new BackgroundWorker();
+        int _workerState;
+        bool goOn = true;
+
+
+        #region INotifyPropertyChanged Member
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        public int WorkerState
+        {
+            get { return _workerState; }
+            set
+            {
+                _workerState = value;
+                if(PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("WorkerState"));
+                        
+                }
+            }
+        }
+
+
         
 
         public MainWindow()
         {
             InitializeComponent();
+           
 
             generateButton.IsEnabled = false;
-
-            /*String ciag = Generate(2147453419, 2147460569, 100);
-
-            Console.WriteLine(ciag);
-
-            foreach(int x in xarray)
-            {
-                Console.WriteLine(x);
-            }*/
 
         }
 
@@ -52,6 +71,11 @@ namespace GeneratorRSA
 
             for(int i = 0; i < lenght; i++)
             {
+                if(!goOn)
+                {
+                    return null;
+                }
+
                 BigInteger bigX = new BigInteger();
                 bigX = BigInteger.ModPow(new BigInteger(xarray[i]), new BigInteger(e), new BigInteger(n));
 
@@ -64,7 +88,7 @@ namespace GeneratorRSA
                 }
 
                 xarray[i + 1] = (int)bigX;
-
+                WorkerState = i;
             }
 
             return result;
@@ -72,7 +96,31 @@ namespace GeneratorRSA
 
         private void generateButton_Click(object sender, RoutedEventArgs e)
         {
-            stringRSA.Text = Generate(keyE, keyN, lenght);
+            generateButton.IsEnabled = false;
+            generateProgressBar.Minimum = 0;
+            generateProgressBar.Maximum = lenght - 1;
+
+            DataContext = this;
+            goOn = true;
+            _bgworker.DoWork += (s, f) =>
+            {
+                String result = Generate(keyE, keyN, lenght);
+                if(result != null)
+                {
+                    this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
+                    {
+                        stringRSA.Text = result;
+
+                    }));
+                } else
+                {
+                    Console.WriteLine("Reset!");
+                }
+                
+            };
+            _bgworker.RunWorkerAsync();
+            Thread.Sleep(300);
+            generateButton.IsEnabled = true;
         }
 
         private void saveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -156,11 +204,13 @@ namespace GeneratorRSA
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
+            goOn = false;
             keyETextBox.Clear();
             keyNTextBox.Clear();
             lenghtTextBox.Clear();
             stringRSA.Clear();
             shouldGenButtonBeEnabled();
+            WorkerState = 0;
         }
     }
 }
