@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections;
 using System.Numerics;
+using System.Windows.Controls;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Microsoft.Win32;
+using System.IO;
 
 namespace GeneratorRSA
 {
@@ -24,19 +16,25 @@ namespace GeneratorRSA
     {
 
         int[] xarray;
+        int keyE;
+        int keyN;
+        int lenght;
+        
 
         public MainWindow()
         {
             InitializeComponent();
 
-            String ciag = Generate(2147453419, 2147460569, 1000000);
+            generateButton.IsEnabled = false;
+
+            /*String ciag = Generate(2147453419, 2147460569, 100);
 
             Console.WriteLine(ciag);
 
             foreach(int x in xarray)
             {
                 Console.WriteLine(x);
-            }
+            }*/
 
         }
 
@@ -70,6 +68,99 @@ namespace GeneratorRSA
             }
 
             return result;
+        }
+
+        private void generateButton_Click(object sender, RoutedEventArgs e)
+        {
+            stringRSA.Text = Generate(keyE, keyN, lenght);
+        }
+
+        private void saveToFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".txt";
+            sfd.Filter = "Text documents (.txt)|*.txt";
+
+            if (sfd.ShowDialog() == true)
+            {
+                File.WriteAllText(sfd.FileName, stringRSA.Text);
+            }
+        }
+
+        private void keyETextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            int key;
+            if(int.TryParse(tb.Text, out key))
+            {
+                keyE = key;
+            } else
+            {
+                tb.Clear();
+            }
+
+            shouldGenButtonBeEnabled();
+
+        }
+
+        private void keyNTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            int key;
+            if (int.TryParse(tb.Text, out key))
+            {
+                keyN = key;
+            }
+            else
+            {
+                tb.Clear();
+            }
+
+            shouldGenButtonBeEnabled();
+        }
+
+        private void lenghtTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var tb = (TextBox)sender;
+            int key;
+            if (int.TryParse(tb.Text, out key))
+            {
+                lenght = key;
+            }
+            else
+            {
+                tb.Clear();
+            }
+
+            shouldGenButtonBeEnabled();
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]");
+            e.Handled = regex.IsMatch(e.Text);
+
+        }
+
+        private void shouldGenButtonBeEnabled()
+        {
+            if (keyETextBox.Text.Length > 0 && keyNTextBox.Text.Length > 0 && lenghtTextBox.Text.Length > 0)
+            {
+                generateButton.IsEnabled = true;
+            }
+            else
+            {
+                generateButton.IsEnabled = false;
+            }
+        }
+
+        private void resetButton_Click(object sender, RoutedEventArgs e)
+        {
+            keyETextBox.Clear();
+            keyNTextBox.Clear();
+            lenghtTextBox.Clear();
+            stringRSA.Clear();
+            shouldGenButtonBeEnabled();
         }
     }
 }
