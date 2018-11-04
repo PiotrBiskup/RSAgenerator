@@ -77,7 +77,7 @@
                     <Button Click="saveToFileButton_Click" x:Name="saveToFileButton" Content="Save to file" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <Button Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
+                    <Button Background="Red" Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
                 </StackPanel>
 
             </Grid>
