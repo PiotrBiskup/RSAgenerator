@@ -141,7 +141,7 @@ namespace GeneratorRSA
 
             if (sfd.ShowDialog() == true)
             {
-                File.WriteAllText(sfd.FileName, stringRSA.Text);
+                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + "lenght=" + lenght + "\n" + stringRSA.Text);
             }
         }
 
