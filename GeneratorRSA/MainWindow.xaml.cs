@@ -9,6 +9,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Windows.Threading;
 using System.Threading;
+using System.Diagnostics;
 
 namespace GeneratorRSA
 {
@@ -25,6 +26,7 @@ namespace GeneratorRSA
         BackgroundWorker _bgworker;
         int _workerState;
         bool goOn = true;
+        String time;
 
 
         #region INotifyPropertyChanged Member
@@ -59,6 +61,8 @@ namespace GeneratorRSA
 
         public String Generate(int e, int n, int lenght)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
             Random randomGen = new Random();
             int random = randomGen.Next(1, n);
@@ -91,12 +95,15 @@ namespace GeneratorRSA
                 WorkerState = i;
             }
 
+            sw.Stop();
+            time = sw.Elapsed.ToString();
             return result;
         }
 
         private void generateButton_Click(object sender, RoutedEventArgs e)
         {
             Thread.Sleep(100);
+            timeTextBlock.Text = "";
             generateButton.IsEnabled = false;
             generateProgressBar.Minimum = 0;
             generateProgressBar.Maximum = lenght - 1;
@@ -112,6 +119,7 @@ namespace GeneratorRSA
                     this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
                     {
                         stringRSA.Text = result;
+                        timeTextBlock.Text = time;
                         generateButton.IsEnabled = true;
                     }));
                 } else
@@ -209,6 +217,7 @@ namespace GeneratorRSA
             goOn = false;
             generateButton.IsEnabled = true;
             stringRSA.Clear();
+            timeTextBlock.Text = "";
             shouldGenButtonBeEnabled();
             WorkerState = 0;
         }
