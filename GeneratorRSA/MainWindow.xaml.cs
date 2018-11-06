@@ -53,7 +53,7 @@ namespace GeneratorRSA
         public MainWindow()
         {
             InitializeComponent();
-            opisTextBlock.Text = "Program \"RSA generator\" służy do generowania ciągu pseudolosowych bitów. Najpierw należy podać klucz i długość ciągu, który chcemy otrzymać. Zarówno pola klucza i długości są zabezpieczone przed wprowadzeniem nieprawidłowych danych. Przycisk \"Generate\" aktywuję się, gdy wszystkie pola są wypełnione. Postęp pracy programu poakzuje nam progress bar. W każdej chwili za pomocą przycisku \"Reset\" można przerwać pracę programu i wprowadzić nowe dane wejściowe. Otrzymy ciąg znaków wyświetlany jest na ekranie. Przy pomocy przycisku \"Save to file\" możemy zapisać wynik w pliku tekstowym.\n\nZasada działania generatora RSA:\nDla klucza [e,n] liczba x0 < n jest losowo wybierana. Pseudolosowy bit si jest to LSB liczby xi, gdzie xi+1 = xi^e mod n.";
+            opisTextBlock.Text = "Program \"RSA generator\" służy do generowania ciągu pseudolosowych bitów. Najpierw należy podać klucz i długość ciągu, który chcemy otrzymać. Zarówno pola klucza i długości są zabezpieczone przed wprowadzeniem nieprawidłowych danych. Przycisk \"Generate\" aktywuję się, gdy wszystkie pola są wypełnione. Postęp pracy programu poakzuje nam progress bar. W każdej chwili za pomocą przycisku \"Reset\" można przerwać pracę programu i wprowadzić nowe dane wejściowe. Otrzymy ciąg znaków wyświetlany jest na ekranie. Przy pomocy przycisku \"Save to file\" możemy zapisać wynik w pliku tekstowym. W pierwszym wersie pliku tekstowego zapisany jest klucz i długość generowanego ciągu.\n\nZasada działania generatora RSA:\nDla klucza [e,n] liczba x0 < n jest losowo wybierana. Pseudolosowy bit si jest to LSB liczby xi, gdzie xi+1 = xi^e mod n.";
 
             generateButton.IsEnabled = false;
 
@@ -141,7 +141,7 @@ namespace GeneratorRSA
 
             if (sfd.ShowDialog() == true)
             {
-                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + "lenght=" + lenght + "\n" + stringRSA.Text);
+                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + " lenght=" + lenght + "\n" + stringRSA.Text);
             }
         }
 

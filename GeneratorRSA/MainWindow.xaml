@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeneratorRSA"
         mc:Ignorable="d"
-        Title="RSA generator" Height="600" Width="800">
+        Title="RSA generator" Height="616.8" Width="800">
 
     <ScrollViewer>
         <Border Padding="10">
