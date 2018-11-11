@@ -27,7 +27,7 @@ namespace GeneratorRSA
         int _workerState;
         bool goOn = true;
         String time;
-
+        int random;
 
         #region INotifyPropertyChanged Member
         public event PropertyChangedEventHandler PropertyChanged;
@@ -53,7 +53,7 @@ namespace GeneratorRSA
         public MainWindow()
         {
             InitializeComponent();
-            opisTextBlock.Text = "Program \"RSA generator\" służy do generowania ciągu pseudolosowych bitów. Najpierw należy podać klucz i długość ciągu, który chcemy otrzymać. Zarówno pola klucza i długości są zabezpieczone przed wprowadzeniem nieprawidłowych danych. Przycisk \"Generate\" aktywuję się, gdy wszystkie pola są wypełnione. Postęp pracy programu poakzuje nam progress bar. W każdej chwili za pomocą przycisku \"Reset\" można przerwać pracę programu i wprowadzić nowe dane wejściowe. Otrzymy ciąg znaków wyświetlany jest na ekranie. Przy pomocy przycisku \"Save to file\" możemy zapisać wynik w pliku tekstowym. W pierwszym wersie pliku tekstowego zapisany jest klucz i długość generowanego ciągu.\n\nZasada działania generatora RSA:\nDla klucza [e,n] liczba x0 < n jest losowo wybierana. Pseudolosowy bit si jest to LSB liczby xi, gdzie xi+1 = xi^e mod n.";
+            //opisTextBlock.Text = "Program \"RSA generator\" służy do generowania ciągu pseudolosowych bitów. Najpierw należy podać klucz i długość ciągu, który chcemy otrzymać. Zarówno pola klucza i długości są zabezpieczone przed wprowadzeniem nieprawidłowych danych. Przycisk \"Generate\" aktywuję się, gdy wszystkie pola są wypełnione. Postęp pracy programu poakzuje nam progress bar. W każdej chwili za pomocą przycisku \"Reset\" można przerwać pracę programu i wprowadzić nowe dane wejściowe. Otrzymy ciąg znaków wyświetlany jest na ekranie. Przy pomocy przycisku \"Save to file\" możemy zapisać wynik w pliku tekstowym. W pierwszym wersie pliku tekstowego zapisany jest klucz i długość generowanego ciągu.\n\nZasada działania generatora RSA:\nDla klucza [e,n] liczba x0 < n jest losowo wybierana. Pseudolosowy bit si jest to LSB liczby xi, gdzie xi+1 = xi^e mod n.";
 
             generateButton.IsEnabled = false;
 
@@ -65,7 +65,7 @@ namespace GeneratorRSA
             sw.Start();
 
             Random randomGen = new Random();
-            int random = randomGen.Next(1, n);
+            random = randomGen.Next(1, n);
 
             xarray = new int[lenght + 1];
 
@@ -133,7 +133,7 @@ namespace GeneratorRSA
            
         }
 
-        private void saveToFileButton_Click(object sender, RoutedEventArgs e)
+        /*private void saveToFileButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.DefaultExt = ".txt";
@@ -141,9 +141,9 @@ namespace GeneratorRSA
 
             if (sfd.ShowDialog() == true)
             {
-                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + " lenght=" + lenght + "\n" + stringRSA.Text);
+                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + " lenght=" + lenght + " random=" + random + "\n" + stringRSA.Text);
             }
-        }
+        }*/
 
         private void keyETextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
@@ -177,7 +177,7 @@ namespace GeneratorRSA
             shouldGenButtonBeEnabled();
         }
 
-        private void lenghtTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+       /* private void lenghtTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             var tb = (TextBox)sender;
             int key;
@@ -191,7 +191,7 @@ namespace GeneratorRSA
             }
 
             shouldGenButtonBeEnabled();
-        }
+        }*/
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -202,7 +202,7 @@ namespace GeneratorRSA
 
         private void shouldGenButtonBeEnabled()
         {
-            if (keyETextBox.Text.Length > 0 && keyNTextBox.Text.Length > 0 && lenghtTextBox.Text.Length > 0)
+            if (keyETextBox.Text.Length > 0 && keyNTextBox.Text.Length > 0)
             {
                 generateButton.IsEnabled = true;
             }
@@ -220,6 +220,31 @@ namespace GeneratorRSA
             timeTextBlock.Text = "";
             shouldGenButtonBeEnabled();
             WorkerState = 0;
+        }
+
+        private void loadFromFileButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EncryptButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DecryptButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void randomTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

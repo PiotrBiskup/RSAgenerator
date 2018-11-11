@@ -5,14 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeneratorRSA"
         mc:Ignorable="d"
-        Title="RSA generator" Height="616.8" Width="800">
+        Title="RSA generator" Height="820.5" Width="800">
 
     <ScrollViewer>
         <Border Padding="10">
 
             <StackPanel>
                 <TextBlock TextWrapping="Wrap" x:Name="opisTextBlock" Text=""  Margin="0 0 0 20"></TextBlock>
-
+                
+                <TextBlock Text="Enter text you want to encrypt or load if from a file:" FontWeight="Bold" Margin="0 0 0 10"></TextBlock>
+                <TextBox x:Name="textToEncryptTextBox" Margin="0 0 0 20" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                <Button x:Name="loadFromFileButton" Click="loadFromFileButton_Click" Content="Load from a file" Width="100" Padding="5" HorizontalAlignment="Left" Margin="0 0 0 20"></Button>
                 <TextBlock Text="Enter the RSA generator key:" FontWeight="Bold" Margin="0 0 0 2"></TextBlock>
                 <Grid>
 
@@ -48,9 +51,8 @@
 
                 </Grid>
 
-
-                <TextBlock Text="How many bits you want to be genrated?:" FontWeight="Bold" Margin="0 20 0 0"></TextBlock>
-                <TextBox TextChanged="lenghtTextBox_TextChanged" x:Name="lenghtTextBox" Width="100" HorizontalAlignment="Left" Padding="3" Margin="0 5 0 0" PreviewTextInput="NumberValidationTextBox"/>
+                <TextBlock Text="In order to decrypt enter randomly chosen number lesser than n otherwise leave it empty:" Margin="0 20 0 10" FontWeight="Bold"/>
+                <TextBox x:Name="randomTextBox" Width="100" HorizontalAlignment="Left" Padding="5" TextChanged="randomTextBox_TextChanged" PreviewTextInput="NumberValidationTextBox"/>
 
                 <Grid Margin="0 20 0 20">
                     <Grid.ColumnDefinitions>
@@ -67,29 +69,35 @@
 
                 </Grid>
 
-                <TextBox x:Name="stringRSA" Padding="3" IsReadOnly="True" Height="160" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" ></TextBox>
+                <TextBox x:Name="stringRSA" Padding="3" IsReadOnly="True" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" ></TextBox>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <Button Click="saveToFileButton_Click" x:Name="saveToFileButton" Content="Save to file" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <Button Background="Red" Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
+                        <Button Click="EncryptButton_Click" x:Name="EncryptButton" Content="Encrypt" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 20"></Button>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
-                        <TextBlock x:Name="timeTextBlock" Margin="0 10 0 0" FontSize="30" HorizontalAlignment="Center"/>
+                        <Button Background="Red" Click="resetButton_Click" x:Name="resetButton" Content="Reset" Padding="5" Width="100" HorizontalAlignment="Left" Margin="0 20 0 0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <Button x:Name="DecryptButton" Click="DecryptButton_Click" Content="Decrypt" Padding="5" Width="100" Margin="0 20 0 0" HorizontalAlignment="Left"></Button>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
+                        <TextBlock x:Name="timeTextBlock" Margin="0 10 0 0" FontSize="20" HorizontalAlignment="Center"/>
                     </StackPanel>
 
                 </Grid>
 
-
-
+                
+                <TextBlock Text="Encryption/decryption output:" FontWeight="Bold" Margin="0 0 0 10"></TextBlock>
+                <TextBox x:Name="OutputTextBlock"  IsReadOnly="True" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                <Button x:Name="SaveToFileButton" Click="SaveToFileButton_Click" Content="Save output to a file" Width="150" Margin="0 20 0 0"></Button>
             </StackPanel>
 
 
