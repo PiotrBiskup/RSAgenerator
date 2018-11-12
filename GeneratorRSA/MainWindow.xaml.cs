@@ -299,11 +299,22 @@ namespace GeneratorRSA
             timeTextBlock.Text = "";
             shouldGenButtonBeEnabled();
             WorkerState = 0;
+            textToEncryptTextBox.Clear();
+            OutputTextBlock.Clear();
+            randomTextBox.Clear();
         }
 
         private void loadFromFileButton_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".txt";
+            ofd.Filter = "Text documents (.txt)|*.txt";
 
+            if (ofd.ShowDialog() == true)
+            {
+
+                textToEncryptTextBox.Text = File.ReadAllText(ofd.FileName);
+            }
         }
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
@@ -339,7 +350,14 @@ namespace GeneratorRSA
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".txt";
+            sfd.Filter = "Text documents (.txt)|*.txt";
 
+            if (sfd.ShowDialog() == true)
+            {
+                File.WriteAllText(sfd.FileName, "keyE=" + keyE + " keyN=" + keyN + " random=" + random + " message=" + OutputTextBlock.Text);
+            }
         }
 
         private void randomTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -360,6 +378,7 @@ namespace GeneratorRSA
 
         private void loadKeyFromFileButton_Click(object sender, RoutedEventArgs e)
         {
+            
 
         }
 
