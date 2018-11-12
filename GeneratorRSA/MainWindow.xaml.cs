@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using System.Threading;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace GeneratorRSA
 {
@@ -307,12 +308,33 @@ namespace GeneratorRSA
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-            OutputTextBlock.Text = EncryptInputWithKey(binaryText, result);
+            String temp = EncryptInputWithKey(binaryText, result);
+            Byte[] tab = GetBytesFromBinaryString(temp);
+            OutputTextBlock.Text = DecodeToString(tab);
         }
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("jestem w decrypt");
+            Byte[] temp = EncodeToBytes(textToEncryptTextBox.Text);
+            
+            string[] tablicastringow = temp.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+            String output = "";
+            for (int i = 0; i < tablicastringow.Length; i++)
+            {
+                output += tablicastringow[i];
+            }
 
+            String temp2 = decodeInput(output, stringRSA.Text);
+
+            Byte[] tab = GetBytesFromBinaryString(temp2);
+            
+            for(int i =0; i< tab.Length; i++)
+            {
+                Console.Write(tab[0]);
+            }
+
+            OutputTextBlock.Text = DecodeToString(tab);
         }
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -378,6 +400,34 @@ namespace GeneratorRSA
             return encryptionResult;
         }
 
-        
+        public Byte[] GetBytesFromBinaryString(String binary)
+        {
+            var list = new List<Byte>();
+
+            for (int i = 0; i < binary.Length; i += 8)
+            {
+                String t = binary.Substring(i, 8);
+
+                list.Add(Convert.ToByte(t, 2));
+            }
+
+            return list.ToArray();
+        }
+
+        String decodeInput(String encoded, String generator)
+        {
+            String decoded = "";
+            for (int i = 0; i < encoded.Length; i++)
+            {
+                if (encoded[i] == '1' && generator[i] == '1') decoded += "0";
+                if (encoded[i] == '0' && generator[i] == '0') decoded += "0";
+                if (encoded[i] == '1' && generator[i] == '0') decoded += "1";
+                if (encoded[i] == '0' && generator[i] == '1') decoded += "1";
+            }
+
+            return decoded;
+        }
+
+
     }
 }
