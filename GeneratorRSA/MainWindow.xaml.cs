@@ -302,6 +302,7 @@ namespace GeneratorRSA
             textToEncryptTextBox.Clear();
             OutputTextBlock.Clear();
             randomTextBox.Clear();
+            ranodmTextBlock.Text = "Random =";
         }
 
         private void loadFromFileButton_Click(object sender, RoutedEventArgs e)
@@ -387,10 +388,27 @@ namespace GeneratorRSA
                 String keyEtemp, keyNtemp, randomTemp, messageTemp;
                String temp = File.ReadAllText(ofd.FileName);
 
-                keyEtemp = temp.Substring(temp.IndexOf("keyE="), temp.IndexOf("keyN=") - 5);
-                keyNtemp = temp.Substring(temp.IndexOf("keyN="), temp.IndexOf("random=") - 7);
-                randomTemp = temp.Substring(temp.IndexOf("random="), temp.IndexOf("message=") - 8);
-                messageTemp = temp.Substring(temp.IndexOf("message="));
+                int start = temp.IndexOf("keyE=") + 5;
+                int end = temp.IndexOf(" keyN=");
+
+                keyEtemp = temp.Substring(start, end - start);
+
+                start = temp.IndexOf("keyN=") + 5;
+                end = temp.IndexOf(" random");
+
+                keyNtemp = temp.Substring(start, end - start);
+
+                start = temp.IndexOf("random=") + 7;
+                end = temp.IndexOf(" message");
+
+                randomTemp = temp.Substring(start, end - start);
+
+                messageTemp = temp.Substring(temp.IndexOf("message=") + 8);
+
+                keyETextBox.Text = keyEtemp;
+                keyNTextBox.Text = keyNtemp;
+                randomTextBox.Text = randomTemp;
+                textToEncryptTextBox.Text = messageTemp;
             }
 
         }
