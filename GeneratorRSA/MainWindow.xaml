@@ -14,7 +14,7 @@
                 <TextBlock TextWrapping="Wrap" x:Name="opisTextBlock" Text=""  Margin="0 0 0 20"></TextBlock>
                 
                 <TextBlock Text="Enter text you want to encrypt or load if from a file:" FontWeight="Bold" Margin="0 0 0 10"></TextBlock>
-                <TextBox x:Name="textToEncryptTextBox" Margin="0 0 0 20" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
+                <TextBox TextChanged="textToEncryptTextBox_TextChanged" x:Name="textToEncryptTextBox" Margin="0 0 0 20" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
                 <Button x:Name="loadFromFileButton" Click="loadFromFileButton_Click" Content="Load from a file" Width="100" Padding="5" HorizontalAlignment="Left" Margin="0 0 0 20"></Button>
                 <TextBlock Text="Enter the RSA generator key:" FontWeight="Bold" Margin="0 0 0 2"></TextBlock>
                 <Grid>
@@ -57,6 +57,7 @@
                 <Grid Margin="0 20 0 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -64,13 +65,16 @@
                         <Button Click="generateButton_Click" x:Name="generateButton" Padding="5" Width="100" Content="Generate" HorizontalAlignment="Left"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
-                        <ProgressBar x:Name="generateProgressBar" Height="28" Value="{Binding WorkerState}"></ProgressBar>
+                        <Button Content="Load key from a file" x:Name="loadKeyFromFileButton" Click="loadKeyFromFileButton_Click" Padding="5" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <ProgressBar x:Name="generateProgressBar" Height="28" Value="{Binding WorkerState}" Margin="10 0 0 0"></ProgressBar>
                     </StackPanel>
 
                 </Grid>
 
                 <TextBox x:Name="stringRSA" Padding="3" IsReadOnly="True" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" ></TextBox>
-
+                <TextBlock x:Name="ranodmTextBlock" Text="Random ="/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>

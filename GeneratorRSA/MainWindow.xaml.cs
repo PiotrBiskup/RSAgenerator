@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Windows.Threading;
 using System.Threading;
 using System.Diagnostics;
+using System.Linq;
 
 namespace GeneratorRSA
 {
@@ -28,6 +29,9 @@ namespace GeneratorRSA
         bool goOn = true;
         String time;
         int random;
+        Byte[] bytesFromInput;
+        String binaryText;
+        String result;
 
         #region INotifyPropertyChanged Member
         public event PropertyChangedEventHandler PropertyChanged;
@@ -100,25 +104,99 @@ namespace GeneratorRSA
             return result;
         }
 
+        public String Generate(int e, int n, int lenght, int rand)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            xarray = new int[lenght + 1];
+
+            xarray[0] = rand;
+
+            String result = "";
+
+            for (int i = 0; i < lenght; i++)
+            {
+                if (!goOn)
+                {
+                    return null;
+                }
+
+                BigInteger bigX = new BigInteger();
+                bigX = BigInteger.ModPow(new BigInteger(xarray[i]), new BigInteger(e), new BigInteger(n));
+
+                if (bigX % 2 == 0)
+                {
+                    result += "0";
+                }
+                else
+                {
+                    result += "1";
+                }
+
+                xarray[i + 1] = (int)bigX;
+                WorkerState = i;
+            }
+
+            sw.Stop();
+            time = sw.Elapsed.ToString();
+            return result;
+        }
+
+
         private void generateButton_Click(object sender, RoutedEventArgs e)
         {
             Thread.Sleep(100);
             timeTextBlock.Text = "";
+
+            bytesFromInput = EncodeToBytes(textToEncryptTextBox.Text);
+            Console.WriteLine("rozmiar tablicy" + bytesFromInput.Length);
+            for(int i = 0; i< bytesFromInput.Length; i++)
+            Console.WriteLine("pierwszy bajt" + bytesFromInput[i]);
+
+            string[] tablicastringow = bytesFromInput.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+            binaryText = "";
+            for (int i = 0; i < tablicastringow.Length; i++)
+            {
+                //if(i%2==0)
+                binaryText += tablicastringow[i];
+            }
+
+            //binaryText = DecodeToString(bytesFromInput);
+            Console.WriteLine("teskst bin: " + binaryText);
+            Console.WriteLine("rozmiar: " + binaryText.Length);
+
+            lenght = bytesFromInput.Length * 8;
+
             generateButton.IsEnabled = false;
             generateProgressBar.Minimum = 0;
             generateProgressBar.Maximum = lenght - 1;
+            
+
+            int dlgRandom = randomTextBox.Text.Length;
+            
 
             DataContext = this;
             goOn = true;
             _bgworker = new BackgroundWorker();
             _bgworker.DoWork += (s, f) =>
             {
-                String result = Generate(keyE, keyN, lenght);
+                if (dlgRandom == 0)
+                {
+                    Console.WriteLine("tutaj 1");
+                    result = Generate(keyE, keyN, lenght);
+                }
+                else
+                {
+                    Console.WriteLine("tutaj 2");
+                    result = Generate(keyE, keyN, lenght, random);
+                }
                 if(result != null)
                 {
                     this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
                     {
                         stringRSA.Text = result;
+                        ranodmTextBlock.Text = "Random: " + random;
                         timeTextBlock.Text = time;
                         generateButton.IsEnabled = true;
                     }));
@@ -202,7 +280,7 @@ namespace GeneratorRSA
 
         private void shouldGenButtonBeEnabled()
         {
-            if (keyETextBox.Text.Length > 0 && keyNTextBox.Text.Length > 0)
+            if (keyETextBox.Text.Length > 0 && keyNTextBox.Text.Length > 0 && textToEncryptTextBox.Text.Length > 0)
             {
                 generateButton.IsEnabled = true;
             }
@@ -229,7 +307,7 @@ namespace GeneratorRSA
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-
+            OutputTextBlock.Text = EncryptInputWithKey(binaryText, result);
         }
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
@@ -244,7 +322,62 @@ namespace GeneratorRSA
 
         private void randomTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            var tb = (TextBox)sender;
+            int key;
+            if (int.TryParse(tb.Text, out key))
+            {
+                random = key;
+            }
+            else
+            {
+                tb.Clear();
+            }
+
+            shouldGenButtonBeEnabled();
+        }
+
+        private void loadKeyFromFileButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
+
+        static byte[] EncodeToBytes(string str)
+        {
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        static string DecodeToString(byte[] bytes)
+        {
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
+        }
+
+        private void textToEncryptTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            shouldGenButtonBeEnabled();
+        }
+
+        String EncryptInputWithKey(String input, String Key)
+        {
+            String encryptionResult = "";
+            for(int i = 0; i < input.Length; i++)
+            {
+                if(input[i] == Key[i])
+                {
+                    encryptionResult += "0";
+                }
+                else
+                {
+                    encryptionResult += "1";
+                }
+            }
+
+            return encryptionResult;
+        }
+
+        
     }
 }
