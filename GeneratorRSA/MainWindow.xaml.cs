@@ -378,7 +378,20 @@ namespace GeneratorRSA
 
         private void loadKeyFromFileButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".txt";
+            ofd.Filter = "Text documents (.txt)|*.txt";
+
+            if (ofd.ShowDialog() == true)
+            {
+                String keyEtemp, keyNtemp, randomTemp, messageTemp;
+               String temp = File.ReadAllText(ofd.FileName);
+
+                keyEtemp = temp.Substring(temp.IndexOf("keyE="), temp.IndexOf("keyN=") - 5);
+                keyNtemp = temp.Substring(temp.IndexOf("keyN="), temp.IndexOf("random=") - 7);
+                randomTemp = temp.Substring(temp.IndexOf("random="), temp.IndexOf("message=") - 8);
+                messageTemp = temp.Substring(temp.IndexOf("message="));
+            }
 
         }
 
