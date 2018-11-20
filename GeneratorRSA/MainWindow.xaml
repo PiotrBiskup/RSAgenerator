@@ -58,6 +58,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -68,6 +69,9 @@
                         <Button Content="Load key from a file" x:Name="loadKeyFromFileButton" Click="loadKeyFromFileButton_Click" Padding="5" HorizontalAlignment="Left"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
+                        <Button Content="Load outside key" x:Name="outsideKeyButton" Click="outsideKeyButton_Click" Padding="5" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
                         <ProgressBar x:Name="generateProgressBar" Height="28" Value="{Binding WorkerState}" Margin="10 0 0 0"></ProgressBar>
                     </StackPanel>
 
@@ -98,7 +102,7 @@
 
                 </Grid>
 
-                
+                <TextBlock x:Name="warningTextBlock" Margin="0 0 0 20"/>
                 <TextBlock Text="Encryption/decryption output:" FontWeight="Bold" Margin="0 0 0 10"></TextBlock>
                 <TextBox x:Name="OutputTextBlock"  IsReadOnly="True" Height="100" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>
                 <Button x:Name="SaveToFileButton" Click="SaveToFileButton_Click" Content="Save output to a file" Width="150" Margin="0 20 0 0"></Button>

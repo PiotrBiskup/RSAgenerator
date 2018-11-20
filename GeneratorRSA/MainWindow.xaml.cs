@@ -320,33 +320,61 @@ namespace GeneratorRSA
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-            String temp = EncryptInputWithKey(binaryText, result);
-            Byte[] tab = GetBytesFromBinaryString(temp);
-            OutputTextBlock.Text = DecodeToString(tab);
+            
+                bytesFromInput = EncodeToBytes(textToEncryptTextBox.Text);
+                Console.WriteLine("rozmiar tablicy" + bytesFromInput.Length);
+                for (int i = 0; i < bytesFromInput.Length; i++)
+                    Console.WriteLine("pierwszy bajt" + bytesFromInput[i]);
+
+                string[] tablicastringow = bytesFromInput.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+                binaryText = "";
+                for (int i = 0; i < tablicastringow.Length; i++)
+                {
+                    //if(i%2==0)
+                    binaryText += tablicastringow[i];
+                }
+            if (binaryText.Length <= stringRSA.Text.Length)
+            {
+
+                String temp = EncryptInputWithKey(binaryText, stringRSA.Text);
+                Byte[] tab = GetBytesFromBinaryString(temp);
+                OutputTextBlock.Text = DecodeToString(tab);
+            } else
+            {
+                int lenght = binaryText.Length - stringRSA.Text.Length;
+                warningTextBlock.Text = "The key is too short. Your key has to have " + lenght + " more bits";
+            }
         }
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("jestem w decrypt");
-            Byte[] temp = EncodeToBytes(textToEncryptTextBox.Text);
-            
-            string[] tablicastringow = temp.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
-            String output = "";
-            for (int i = 0; i < tablicastringow.Length; i++)
+            if (textToEncryptTextBox.Text.Length <= stringRSA.Text.Length)
             {
-                output += tablicastringow[i];
+                Byte[] temp = EncodeToBytes(textToEncryptTextBox.Text);
+
+                string[] tablicastringow = temp.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+                String output = "";
+                for (int i = 0; i < tablicastringow.Length; i++)
+                {
+                    output += tablicastringow[i];
+                }
+
+                String temp2 = decodeInput(output, stringRSA.Text);
+
+                Byte[] tab = GetBytesFromBinaryString(temp2);
+
+                for (int i = 0; i < tab.Length; i++)
+                {
+                    Console.Write(tab[0]);
+                }
+
+                OutputTextBlock.Text = DecodeToString(tab);
             }
-
-            String temp2 = decodeInput(output, stringRSA.Text);
-
-            Byte[] tab = GetBytesFromBinaryString(temp2);
-            
-            for(int i =0; i< tab.Length; i++)
+            else
             {
-                Console.Write(tab[0]);
+                int lenght = stringRSA.Text.Length - textToEncryptTextBox.Text.Length;
+                warningTextBlock.Text = "The key is too short. Your key has to have " + lenght + " more bits";
             }
-
-            OutputTextBlock.Text = DecodeToString(tab);
         }
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -478,6 +506,19 @@ namespace GeneratorRSA
             return decoded;
         }
 
+        private void outsideKeyButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".txt";
+            ofd.Filter = "Text documents (.txt)|*.txt";
 
+            if (ofd.ShowDialog() == true)
+            {
+               
+                String temp = File.ReadAllText(ofd.FileName);
+                stringRSA.Text = temp;
+            }
+
+         }
     }
 }
