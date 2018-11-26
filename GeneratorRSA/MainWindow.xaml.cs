@@ -322,7 +322,8 @@ namespace GeneratorRSA
         {
             String temp = EncryptInputWithKey(binaryText, result);
             Byte[] tab = GetBytesFromBinaryString(temp);
-            OutputTextBlock.Text = DecodeToString(tab);
+            //OutputTextBlock.Text = DecodeToString(tab);
+            OutputTextBlock.Text = temp;
         }
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
